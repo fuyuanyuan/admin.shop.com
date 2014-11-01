@@ -1,0 +1,53 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 添加<?php echo $table; ?> </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst"><?php echo $table; ?>列表</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 添加<?php echo $table; ?> </span>
+    <div style="clear:both"></div>
+</h1>
+<div class="main-div">
+    <form action="__SELF__" method="post">
+        <table width="100%" id="general-table">
+        <?php foreach ($fields as $k => $v):
+        		if($v['Field'] == 'id')
+        			continue ;
+        	 ?>
+            <tr>
+                <td class="label"><?php echo $v['Comment']; ?>:</td>
+                <td>
+                	<?php if(strpos($v['Comment'], '@radio') !== FALSE): 
+                		$pos = strpos($v['Comment'],'|') + 1;
+                		$_str = substr($v['Comment'], $pos);
+                		$_str = explode('-', $_str);
+                		foreach ($_str as $k1 => $v1):
+                	?>
+                		<input <?php if($k1==0) echo 'checked="checked"'; ?> type="radio" name="<?php echo $v['Field']; ?>" value="<?php echo $v1; ?>" /><?php echo $v1; ?>
+                	<?php endforeach;else: ?>
+                   	    <input type='text' name='<?php echo $v['Field']; ?>' maxlength="20" value='' size='27' />
+                    <?php endif; ?>
+                    <?php if($v['Null'] == 'NO'): ?>
+                   	<font color="red">*</font>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </table>
+        <div class="button-div">
+            <input type="submit" value=" 确定 " />
+            <input type="reset" value=" 重置 " />
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

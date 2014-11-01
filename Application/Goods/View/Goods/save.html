@@ -1,0 +1,361 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 修改商品 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst">商品列表</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 修改商品 </span>
+    <div style="clear:both"></div>
+</h1>
+
+<div class="ab-div">
+	<div id="tabbar-div">
+        <p>
+            <span class="tab-front">基础信息</span>
+            <span class="tab-back">商品描述</span>
+            <span class="tab-back">会员价格</span>
+            <span class="tab-back">商品属性</span>
+            <span class="tab-back">商品相册</span>
+            <span class="tab-back">相关文章</span>
+        </p>
+    </div>
+    <div id="tabbody-div">
+	    <form action="__SELF__" method="post" enctype="multipart/form-data">
+	    	<input type="hidden" name="Goods[id]" value="<?php echo $data['id']; ?>" />
+	    	<input type="hidden" name="Godos[logo]" value="<?php echo $data['logo']; ?>" />
+	    	<input type="hidden" name="Godos[sm_logo]" value="<?php echo $data['sm_logo']; ?>" />
+	    	<input type="hidden" name="Godos[mid_logo]" value="<?php echo $data['mid_logo']; ?>" />
+	    	<input type="hidden" name="Godos[big_logo]" value="<?php echo $data['big_logo']; ?>" />
+	        <table width="100%" class="form_table">
+	                    <tr>
+	                <td class="label">商品名称:</td>
+	                <td>
+	                	                   	    <input type='text' name='Goods[goods_name]' maxlength="20" value='<?php echo $data['goods_name']; ?>' size='27' />
+	                                                           	<font color="red">*</font>
+	                                    </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">logo:</td>
+	                <td>
+	                	<img src="<?php echo IMG_URL . $data['mid_logo']; ?>" /><br />
+	                	                   	    <input type='file' name='logo' />
+	                                    </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">市场价:</td>
+	                <td>
+	                	                   	    <input type='text' name='Goods[market_price]' maxlength="20" value='<?php echo $data['market_price']; ?>' size='27' />
+	                                                           	<font color="red">*</font>
+	                                    </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">本店价:</td>
+	                <td>
+	                	                   	    <input type='text' name='Goods[shop_price]' maxlength="20" value='<?php echo $data['shop_price']; ?>' size='27' />
+	                                                           	<font color="red">*</font>
+	                                    </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">商品分类:</td>
+	                <td>
+	                	<select name="Goods[cat_id]">
+	                	<option value="">选择分类</option>
+	                	<?php foreach ($catData as $k => $v):
+	                		if($v['id'] == $data['cat_id'])
+	                			$select = 'selected="selected"';
+	                		else 
+	                			$select = '';
+	                	?>
+	                		<option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level'] * 4) . $v['cat_name']; ?></option>
+	                	<?php endforeach; ?>
+	                	</select>
+	                	<font color="red">*</font>
+	                </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">品牌:</td>
+	                <td>
+	                <?php echo array2select($brandData, 'Goods[brand_id]', 'brand_name', $data['brand_id']); ?>
+	                </td>
+	            </tr>
+	                    <tr>
+	                <td class="label">是否上架:</td>
+	                <td>
+	   			 <input <?php if($data['is_on_sale'] == '是') echo 'checked="checked"'; ?> type="radio" name="Goods[is_on_sale]" value="是" />是
+	       		<input  <?php if($data['is_on_sale'] == '否') echo 'checked="checked"'; ?> type="radio" name="Goods[is_on_sale]" value="否" />否                	                                       	<font color="red">*</font>
+	                                    </td>
+	            </tr>
+	            <tr>
+	                <td class="label">推荐到:</td>
+	                <td>
+	                	<?php foreach ($recData as $k => $v): ?>
+	                		<input <?php if(strpos(','.$v['goods_id'].',', ','.$data['id'].',') !== FALSE) echo 'checked="checked"'; ?> type="checkbox" value="<?php echo $v['id']; ?>" name="recto[]" /><?php echo $v['rec_name']; ?>
+	                	<?php endforeach; ?>  
+	                </td>
+	            </tr>
+	        </table>
+	        
+	        <table width="100%" style="display:none;" class="form_table">
+	        	<tr><td><textarea id="goods_desc" name="Goods[goods_desc]"><?php echo $data['goods_desc']; ?></textarea></td></tr>
+	        </table>
+	        <!--会员价格-->
+	         <table width="100%" style="display:none;" class="form_table">
+	         <?php 
+	         // 循环所有的会员级别
+	         foreach ($mpData as $k => $v):
+	         	// 从会员价格中找出对应级别的价格放到input中
+	         	$_value = '';
+	         	foreach ($lpData as $k1 => $v1)
+	         	{
+	         		if($v1['level_id'] == $v['id'])
+	         		{
+	         			$_value = $v1['price'];
+	         			break;
+	         		}
+	         	}
+	          ?>
+	        	<tr>
+	        		<td><?php echo $v['level_name']; ?>:</td>
+	        		<td>￥<input value="<?php echo $_value; ?>" type="text" name="LevelPrice[<?php echo $v['id']; ?>]" />元</td>
+	        	</tr>
+	         <?php endforeach; ?>
+	        </table>
+	        
+	         <table width="100%" style="display:none;" class="form_table">
+	         	<thead>
+	        		<tr><td>商品类型：<?php 
+	        		if($data['type_id'])
+	        			$isDisabled = TRUE;
+	        		else 
+	        			$isDisabled = FALSE;
+	        		echo array2select($typeData, 'Goods[type_id]', 'type_name', $data['type_id'], $isDisabled); ?></td></tr>
+	        	</thead>
+	        	<tbody id="attrbody">
+	        	<?php 
+	        	// 循环每一个属性输出表单元素
+	        	foreach($attrData as $k => $v): 
+	        		$_attr1 = array();
+	        		// 找到每个属性对应的值是多少
+	        		foreach ($gaData as $k2 => $v2)
+	        		{
+	        			if($v['id'] == $v2['attr_id'])
+	        			{
+	        				if($v['attr_type'] == '单选')
+	        				{
+	        					$_attr1[] = $v2['attr_value'];
+	        					continue ;
+	        				}
+	        				else 
+	        				{
+	        					break;
+	        				}
+	        			}
+	        		}
+	        	?>
+	        	<tr>
+	        		<td width='150'><?php echo $v['attr_name']; ?></td>
+	        		<td>
+	        			<?php if($v['attr_value'] == ''): ?>
+	        				<input type="text" value="<?php echo $v2['attr_value']; ?>" name="GoodsAttr[<?php echo $v['id']; ?>]" />
+	        			<?php else: 
+	        			$_attr = explode(',', $v['attr_value']);
+	        			if($v['attr_type'] == '单选'):
+	        				
+	        				foreach ($_attr as $k1 => $v1):
+	        			?>
+	        				<input <?php if(in_array($v1, $_attr1)) echo 'checked="checked"'; ?> type='checkbox' name='GoodsAttr[<?php echo $v['id']; ?>][]' value='<?php echo $v1; ?>' /><?php echo $v1; ?>
+	        			<?php endforeach;else: ?>
+	        				<select name="GoodsAttr[<?php echo $v['id']; ?>]">
+	        					<?php foreach ($_attr as $k1 => $v1): 
+	        						if($v1 == $v2['attr_value'])
+	        							$select = 'selected="selected"';
+	        						else 
+	        							$select = '';
+	        					?>
+	        						<option <?php echo $select; ?> value="<?php echo $v1; ?>"><?php echo $v1; ?></option>
+	        					<?php endforeach; ?>
+	        				</select>
+	        			<?php endif;endif; ?>
+	        		</td>
+	        	</tr>
+	        	<?php endforeach; ?>
+	        	</tbody>
+	        </table>
+	        <table width="100%" style="display:none;" class="form_table" id="imgs">
+	        	<tr><td><input type="button" value="添加一张" id="addimg" /></td></tr>
+	        	<tr><td><ul>
+	        	<!-- 循环输出所有图片 -->
+	        	<?php foreach ($gpData as $k => $v): ?>
+	        	<li style="float:left;margin:5px;list-style-type:none;">
+		        	<img src="<?php echo IMG_URL . $v['mid_logo']; ?>" /><br />
+		        	<input onclick="delImg(this,<?php echo $v['id']; ?>)" type="button" value="-" />
+	        	</li>
+	        	<?php endforeach; ?>
+	        	</ul>
+	        	</td></tr>
+	        	<tr><td><input type="file" name="GoodsPics[]" /></td></tr>
+	        </table>
+	        
+	        <table width="100%" style="display:none;" class="form_table">
+	        	<tr><td colspan="2">搜索文章：<input type="text" id="searchKey" /><input id="searchBtn" type="button" value="搜索" /></td></tr>
+	        	<tr>
+	        		<td align="left"><select id="left" size="25" style="width:300px;"></select></td>
+	        		<td align="left">
+	        		<select multiple="multiple" id="right" size="25" style="width:300px;">
+	        		<?php foreach ($news as $k => $v): ?>
+	        		<option value="<?php echo $v['id']; ?>"><?php echo $v['title']; ?></option>
+	        		<?php endforeach; ?>
+	        		</select></td>
+	        	</tr>
+	        	<tr><td colspan="2" id="hidden">
+	        		<?php foreach ($news as $k => $v): ?>
+	        		<input type="hidden" value="<?php echo $v['id']; ?>" name="News[]" />
+	        		<?php endforeach; ?>
+	        	</td></tr>
+	        </table>
+	        
+	        
+	        <div class="button-div">
+	            <input type="submit" value=" 确定 " />
+	            <input type="reset" value=" 重置 " />
+	        </div>
+	    </form>
+	</div>
+</div>
+
+</body>
+</html>
+<script>
+$("#tabbar-div p span").click(function(){
+	// 点击的是第几个按钮
+	var i = $(this).index();
+	var tables = $("table.form_table");
+	tables.hide();
+	// 显示第I个table
+	tables.eq(i).show();
+	$(".tab-front").removeClass("tab-front").addClass("tab-back");
+	$(this).removeClass("tab-back").addClass("tab-front");
+});
+UE.getEditor('goods_desc', {
+	"initialFrameWidth" : "100%",
+	"initialFrameHeight" : 500
+});
+$("#addimg").click(function(){
+	$("#imgs").append("<tr><td><input value='x' type='button' onclick='this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);' /><input type='file' name='GoodsPics[]' /></td></tr>");
+});
+// 为商品类型添加onchange事件
+$("select[name='Goods[type_id]']").change(function(){
+	var value = $(this).val();
+	if(value == "")
+	{
+		$("#attrbody").html("");
+		return false;
+	}
+	$.ajax({
+		type : "GET",
+		url : "__CONTROLLER__/ajaxGetAttr/type_id/"+value,
+		dataType : "json",    // 返回数据的类型
+		success : function(data)
+		{
+			var html = "";
+			// 处理服务器返回的json数据生成表单元素
+			// 循环每一个属性
+			$(data).each(function(k,v){
+				html += "<tr>";
+				html += "<td width='150'>"+v.attr_name+"</td>";
+				html += "<td>";
+				if(v.attr_value == "")
+				{
+					// 没有可选值输出文本框
+					html += "<input type='text' name='GoodsAttr["+v.id+"]' />";
+				}
+				else
+				{
+					if(v.attr_type == '单选')
+					{
+						var _attr = v.attr_value.split(",");
+						for(var i=0; i<_attr.length; i++)
+						{
+							html += "<input type='checkbox' name='GoodsAttr["+v.id+"][]' value='"+_attr[i]+"' />"+_attr[i];
+						}
+					}
+					else
+					{
+						html += "<select name='GoodsAttr["+v.id+"]'>";
+						// 可选值转化成数组
+						var _attr = v.attr_value.split(",");
+						for(var i=0; i<_attr.length; i++)
+						{
+							html += "<option value='"+_attr[i]+"'>"+_attr[i]+"</option>";
+						}
+						html += "</select>";
+					}
+				}
+				html += "</td>";
+				html += "</tr>";
+			});
+			$("#attrbody").html(html);
+		}
+	});
+});
+// ajax删除图片
+function delImg(btn,imgId)
+{
+	$.ajax({
+		type : "GET",
+		url : "__CONTROLLER__/ajaxDelImg/id/"+imgId,
+		success : function(data)
+		{
+			$(btn).parent().remove();
+		}
+	});
+}
+// 制作 AJAX搜索新闻
+$("#searchBtn").click(function(){
+	var title = $("#searchKey").val();
+	$.ajax({
+		type : "GET",
+		url : "__CONTROLLER__/ajaxSearchArticles/title/"+encodeURIComponent(title),
+		dataType : "json",
+		success : function(data)
+		{
+			var html = "";
+			$(data).each(function(k,v){
+				html += "<option value='"+v.id+"'>"+v.title+"</option>";
+			});
+			$("#left").html(html);
+		}
+	});
+});
+// 为两个seelct绑定双啊事件
+$("#left").dblclick(function(){
+	// 获取点击的那个option
+	var option = $(this).find("option:selected");
+	var text = option.text();
+	var value = option.val();
+	if($("#right").find("option[value="+value+"]").length == 0)
+	{
+		$("#right").append("<option value='"+value+"'>"+text+"</option>");
+		$("#hidden").append("<input type='hidden' name='News[]' value='"+value+"' />");
+	}
+});
+$("#right").dblclick(function(){
+	// 获取点击的那个option
+	var option = $(this).find("option:selected");
+	var i = option.index();
+	$("#hidden :hidden").eq(i).remove();
+	option.remove();
+});
+</script>

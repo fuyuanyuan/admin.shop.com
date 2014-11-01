@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript" src="__PUBLIC__/Js/jquery-1.4.2.min.js"></script>
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/add">添加</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 列表 </span>
+    <div style="clear:both"></div>
+</h1>
+
+<form method="post" action="__CONTROLLER__/bdel" name="listForm" onsubmit="return confirm('确定要删除吗？');">
+    <div class="list-div" id="listDiv">
+        <table cellpadding="3" cellspacing="1">
+            <tr>
+            	<th width="15"><input type="checkbox" id="selall" /></th>
+            	                <th>id</th>
+                                <th>域名</th>
+                                <th>当前图片的数量</th>
+                                <th>服务器上最大的图片数量</th>
+                                <th>ftp端口号</th>
+                                <th>ftp账号</th>
+                                <th>ftp密码</th>
+                                <th>操作</th>
+            </tr>
+            <?php foreach ($data as $k => $v): ?>            <tr>
+            	<td><input name="delid[]" class="selall" type="checkbox" value="<?php echo $v['id']; ?>" /></td>
+								<td><?php echo $v['id']; ?></td>
+								<td><?php echo $v['image_domain']; ?></td>
+								<td><?php echo $v['image_count']; ?></td>
+								<td><?php echo $v['max_image_count']; ?></td>
+								<td><?php echo $v['ftpport']; ?></td>
+								<td><?php echo $v['ftpuser']; ?></td>
+								<td><?php echo $v['ftppassword']; ?></td>
+				            	<td align="center">
+                <a href="__CONTROLLER__/save/id/<?php echo $v['id']; ?>" title="编辑">编辑</a>
+                <a onclick="return confirm('确定要这样操作吗？');" href="__CONTROLLER__/del/id/<?php echo $v['id']; ?>" title="编辑">移除</a> 
+                </td>
+            </tr>
+            <?php endforeach; ?>            <tr>
+            	<td><input type="submit" value="删除所选" /></td>
+                <td align="center" nowrap="true" colspan="8">
+                    <?php echo $page; ?>                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<div id="footer">传智播客</div>
+</body>
+</html>
+<script>
+$("#selall").click(function(){
+	// 获取点击的选中状态
+	var _s = $(this).attr("checked");
+	if(_s)
+	{
+		$(".selall").attr("checked", "checked");
+	}
+	else
+	{
+		$(".selall").removeAttr("checked");
+	}
+});
+</script>

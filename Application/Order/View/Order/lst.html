@@ -1,0 +1,52 @@
+<!-- $Id: category_list.htm 17019 2010-01-29 10:10:34Z liuhui $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 定单列表 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>
+    <span class="action-span1"><a href="__GROUP__">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 定单列表 </span>
+    <div style="clear:both"></div>
+</h1>
+<form method="post" action="__CONTROLLER__/bdel" name="listForm">
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+            	                <th>id</th>
+                                <th>定单编号</th>
+                                <th>下单时间</th>
+                                <th>支付状态</th>
+                                <th>送货状态</th>
+                                <th>定单总价</th>
+                                <th>支付方式</th>
+            </tr>
+            <?php foreach ($data as $k => $v): ?>            <tr align="center" class="0">
+								<td>
+					<?php echo $v['id']; ?>				</td>
+								<td>
+					<a href="__CONTROLLER__/view/id/<?php echo $v['id']; ?>"><?php echo $v['order_sn']; ?></a>				</td>
+								<td>
+					<?php echo $v['addtime']; ?>				</td>
+								<td>
+					<?php echo $v['pay_status']; ?>				</td>
+								<td>
+					<?php echo $v['post_status']; ?>				</td>
+								<td>
+					<?php echo $v['total_price']; ?>				</td>
+								<td>
+					<?php echo $v['pay_method'] == 1 ? '支付宝' : '余额支付'; ?>				</td>
+            </tr>
+            <?php endforeach; ?>            <tr>
+            	<td colspan="7"><?php echo $page; ?></td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>

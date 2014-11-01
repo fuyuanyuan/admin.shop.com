@@ -1,0 +1,94 @@
+<!-- $Id: category_list.htm 17019 2010-01-29 10:10:34Z liuhui $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 定单列表 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst">返回</a></span>
+    <span class="action-span1"><a href="__GROUP__">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 定单信息 </span>
+    <div style="clear:both"></div>
+</h1>
+<form method="post" action="__CONTROLLER__/bdel" name="listForm">
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+        	 <tr>
+				<th colspan="4">定单基本信息</th>
+            </tr>
+            <tr>
+            	<td>定单编号：</td>
+            	<td><?php echo $info['order_sn']; ?></td>
+            	<td>定单总价：</td>
+            	<td>￥<?php echo $info['total_price']; ?>元</td>
+            </tr>
+            <tr>
+            	<td>支付状态：</td>
+            	<td><?php echo $info['pay_status']; ?></td>
+            	<td>配送状态：</td>
+            	<td><?php echo $info['post_status']; ?></td>
+            </tr>
+            <tr>
+            	<td>收货人姓名：</td>
+            	<td><?php echo $info['shr_username']; ?></td>
+            	<td>收货人电话：</td>
+            	<td><?php echo $info['shr_phone']; ?></td>
+            </tr>
+             <tr>
+            	<td>收货人详细地址：</td>
+            	<td colspan="3"><?php echo $info['shr_province']; ?> <?php echo $info['shr_city']; ?> <?php echo $info['shr_area']; ?> <?php echo $info['shr_address']; ?></td>
+            </tr>
+            <tr>
+            	<td>支付方式：</td>
+            	<td colspan="3"><?php echo $info['pay_status'] == 1 ? '支付宝' : '余额支付'; ?></td>
+            </tr>
+        </table>
+        <br />
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+        	<tr>
+				<th colspan="6">定单商品列表</th>
+            </tr>
+        	 <tr>
+				<th>id</th>
+				<th>logo</th>
+				<th>商品名称</th>
+				<th>商品属性</th>
+				<th>商品数量</th>
+				<th>商品价格</th>
+            </tr>
+            <?php foreach ($goods as $k => $v): ?>
+            <tr>
+            	<td><?php echo $v['goods_id']; ?></td>
+            	<td><a target="_blank" href="http://www.shop.com/index.php/Home/Index/goods/id/<?php echo $v['goods_id']; ?>"><img src="<?php echo IMG_URL . $v['goods_logo']; ?>" /></a></td>
+            	<td><a target="_blank" href="http://www.shop.com/index.php/Home/Index/goods/id/<?php echo $v['goods_id']; ?>"><?php echo $v['goods_name']; ?></a></td>
+            	<td><?php echo $v['goods_attr_str']; ?></td>
+            	<td><?php echo $v['goods_number']; ?></td>
+            	<td><?php echo $v['goods_price']; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <br />
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+        	 <tr>
+				<th>定单操作</th>
+            </tr>
+           <tr><td>
+             <?php if($info['pay_status'] == '未支付'): ?>
+				<input onclick="location.href='__CONTROLLER__/setPaid/id/<?php echo $info['id']; ?>';" type="button" value="已支付" />
+			<?php endif; ?>
+			<?php if($info['post_status'] == '未发货'): ?>
+				<input onclick="location.href='__CONTROLLER__/setPosted/id/<?php echo $info['id']; ?>';" type="button" value="已发货" />
+			<?php elseif($info['post_status'] == '退货中'): ?>
+				<input onclick="location.href='__CONTROLLER__/setRefund/id/<?php echo $info['id']; ?>';" type="button" value="已退货" />
+			<?php endif; ?>
+           </td></tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>

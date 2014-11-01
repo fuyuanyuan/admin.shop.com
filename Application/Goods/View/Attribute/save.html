@@ -1,0 +1,52 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 修改属性 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst/type_id/<?php echo $_GET['type_id']; ?>">属性列表</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 修改属性 </span>
+    <div style="clear:both"></div>
+</h1>
+<div class="main-div">
+    <form action="__SELF__" method="post">
+   		<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+   		<input type="hidden" name="type_id" value="<?php echo $_GET['type_id']; ?>" />
+        <table width="100%" id="general-table">
+                    <tr>
+                <td class="label">属性名称:</td>
+                <td>
+                	                   	    <input type='text' name='attr_name' maxlength="20" value='<?php echo $data['attr_name']; ?>' size='27' />
+                                                           	<font color="red">*</font>
+                                    </td>
+            </tr>
+                    <tr>
+                <td class="label">属性类型:</td>
+                <td>
+                	                		<input <?php if($data['attr_type'] == "唯一") echo 'checked="checked"'; ?> type="radio" name="attr_type" value="唯一" />唯一                	                		<input <?php if($data['attr_type'] == "单选") echo 'checked="checked"'; ?> type="radio" name="attr_type" value="单选" />单选                	                                       	<font color="red">*</font>
+                                    </td>
+            </tr>
+                    <tr>
+                <td class="label">属性可选值:</td>
+                <td>
+                <textarea name="attr_value" rows="6" cols="60"><?php echo $data['attr_value']; ?></textarea>
+                <br />如果有多个属性值就用,号隔开
+                                    </td>
+            </tr>
+                </table>
+        <div class="button-div">
+            <input type="submit" value=" 确定 " />
+            <input type="reset" value=" 重置 " />
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

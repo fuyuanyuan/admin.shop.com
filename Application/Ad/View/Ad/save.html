@@ -1,0 +1,164 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 修改广告 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery-1.4.2.min.js"></script>
+<style>
+li{list-style-type:none;background:#EEE;margin:10px;border:1px solid #CCC;padding:5px;}
+</style>
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst">广告列表</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 修改广告 </span>
+    <div style="clear:both"></div>
+</h1>
+<div class="main-div">
+    <form action="__SELF__" method="post" enctype="multipart/form-data">
+    	<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+    	<input type="hidden" name="ad_type" value="<?php echo $data['ad_type']; ?>" />
+    	<input type="hidden" name="ad_img" value="<?php echo $data['ad_img']; ?>" />
+        <table width="100%" id="general-table">
+        	 <tr>
+                <td class="label">广告位:</td>
+                <td>
+                	<?php echo array2select($apData, 'pos_id', 'pos_name', $data['pos_id']); ?>
+                                                           	<font color="red">*</font>
+                                    </td>
+            </tr>
+                    <tr>
+                <td class="label">广告名称:</td>
+                <td>
+                	                   	    <input type='text' name='ad_name' maxlength="20" value='<?php echo $data['ad_name']; ?>' size='27' />
+                                                           	<font color="red">*</font>
+                                    </td>
+            </tr>
+                    
+                    <tr>
+                <td class="label">是否启用@radio|是-否:</td>
+                <td>
+                	<input <?php if($data['is_on'] == '是') echo 'checked="checked"'; ?> type="radio" name="is_on" value="是" />是                	                
+                	<input <?php if($data['is_on'] == '否') echo 'checked="checked"'; ?> type="radio" name="is_on" value="否" />否                	                                       	<font color="red">*</font>
+                                    </td>
+            </tr>
+            <tr>
+                <td class="label">广告类型:</td>
+                <td>
+                	<?php echo $data['ad_type']; ?>
+                                    </td>
+            </tr>
+                    <tr id="ad_link" <?php if($data['ad_type'] != 'img' && $data['ad_type'] != 'text') echo 'style="display:none;"'; ?>>
+                <td class="label">链接地址:</td>
+                <td>
+                	                   	    <input type='text' name='ad_link' maxlength="20" value='<?php echo $data['ad_link']; ?>' size='45' />
+
+                                    </td>
+            </tr>
+                    <tr id="img" <?php if($data['ad_type'] != 'img') echo 'style="display:none;"'; ?>>
+                <td class="label">图片:</td>
+                <td>
+                	<img src="<?php echo IMG_URL.$data['ad_img']; ?>" width="50" /><br />
+                	                   	    <input type='file' name='ad_img' />
+
+                                    </td>
+            </tr>
+                    <tr id="text" <?php if($data['ad_type'] != 'text' && $data['ad_type'] != 'code') echo 'style="display:none;"'; ?>>
+                <td class="label">文字/代码:</td>
+                <td>
+                	<textarea name="ad_text" rows="6" cols="60"><?php echo $data['ad_text']; ?></textarea>
+                                    </td>
+            </tr>
+            	<tr id="jq_info" <?php if($data['ad_type'] != 'jq') echo 'style="display:none;"'; ?>>
+            		<td class="label">jq图片信息：</td>
+            		<td>
+            			<ul>
+            			<li>
+            				<input onclick="addRow(this);" type="button" value="+" />
+            				图片：<input type="file" name="jq_img[]" /><br />
+            				链接地址：<input type="text" size="45" name="jq_link[]" />
+            			</li>
+            			<?php if($jqData): 
+            			foreach ($jqData as $k => $v):
+            			?>
+            				<li>
+            					<input imgid="<?php echo $v['id']; ?>" onclick="addRow(this);" type="button" value="-" />
+            					图片：<img width="50" src="<?php echo IMG_URL . $v['img']; ?>" /><br />
+            					<input type="file" name="jq_img_e[]" /><br />
+            					链接地址：<input type="text" size="45" name="jq_link_e[<?php echo $v['id']; ?>]" value="<?php echo $v['ad_link']; ?>" />
+            				</li>
+            			<?php endforeach;endif; ?>
+            			</ul>
+            		</td>
+            	</tr>
+                </table>
+        <div class="button-div">
+            <input type="submit" value=" 确定 " />
+            <input type="reset" value=" 重置 " />
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+<script>
+function addRow(btn)
+{
+	var li = $(btn).parent();
+	if($(btn).val() == "+")
+	{
+		var newli = li.clone();
+		newli.find(":button").val("-");
+		li.after(newli);
+	}
+	else
+	{
+		// 执行AJAX删除图片
+		// 获取记录的id
+		var imgid = $(btn).attr('imgid');
+		if(imgid)
+		{
+			$.get("__CONTROLLER__/ajaxDelImg/id/"+imgid);
+		}
+		li.remove();
+	}
+}
+// 选中四个广告类型的checkbox框
+$("input[name=ad_type]").click(function(){
+	// 当前点击的是第几个
+	var i = $(this).index();
+	if(i==0)
+	{
+		$("#jq_info").show();
+		$("#text").hide();
+		$("#img").hide();
+		$("#ad_link").hide();
+	}
+	else if(i == 1)
+	{
+		$("#jq_info").hide();
+		$("#text").hide();
+		$("#img").show();
+		$("#ad_link").show();
+	}
+	else if(i == 2)
+	{
+		$("#jq_info").hide();
+		$("#text").show();
+		$("#img").hide();
+		$("#ad_link").show();
+	}
+	else
+	{
+		$("#jq_info").hide();
+		$("#text").show();
+		$("#img").hide();
+		$("#ad_link").hide();
+	}
+});
+</script>

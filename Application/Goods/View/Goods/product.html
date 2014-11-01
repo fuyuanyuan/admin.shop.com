@@ -1,0 +1,88 @@
+<!-- $Id: category_list.htm 17019 2010-01-29 10:10:34Z liuhui $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 货品列表 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/Js/jquery-1.4.2.min.js" type="text/javascript"></script>
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst">返回</a></span>
+    <span class="action-span1"><a href="__GROUP__">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 货品列表 </span>
+    <div style="clear:both"></div>
+</h1>
+<form method="post" action="__SELF__" name="listForm">
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+            	<?php 
+            		$_count = count($attrData);
+            	foreach ($attrData as $k => $v): ?>
+            		<th><?php echo $k; ?></th>
+            	<?php endforeach; ?>
+            	<th width="100">库存量</th>
+            	<th width="50">操作</th>
+            </tr>
+            <?php if($proData): 
+            foreach ($proData as $k2 => $v2):
+            ?>
+            <tr>
+            	<!-- 循环货品的单选的属性 -->
+            	<?php foreach ($attrData as $k => $v): ?>
+					<td align="center"><select name="goods_attr_id[]">
+						<option value="">请选择...</option>
+						<?php foreach ($v as $k1 => $v1): 
+							if($v2['gaData'][$v1['id']] == $v1['attr_value'])
+								$select = 'selected="selected"';
+							else 
+								$select = '';
+						?>
+							<option <?php echo $select; ?> value="<?php echo $v1['id']; ?>"><?php echo $v1['attr_value']; ?></option>
+						<?php endforeach; ?>
+					</select></td>
+            	<?php endforeach; ?>
+            	<td><input type="text" name="goods_number[]" value="<?php echo $v2['goods_number']; ?>" /></td>
+            	<td><input type="button" onclick="addRow(this);" value="<?php echo $k2 == 0 ? '+' : '-'; ?>" /></td>
+            </tr>
+            <?php endforeach;else: ?>
+            <tr>
+            	<?php foreach ($attrData as $k => $v): ?>
+					<td align="center"><select name="goods_attr_id[]">
+						<option value="">请选择...</option>
+						<?php foreach ($v as $k1 => $v1): ?>
+							<option value="<?php echo $v1['id']; ?>"><?php echo $v1['attr_value']; ?></option>
+						<?php endforeach; ?>
+					</select></td>
+            	<?php endforeach; ?>
+            	<td><input type="text" name="goods_number[]" /></td>
+            	<td><input type="button" onclick="addRow(this);" value="+" /></td>
+            </tr>
+            <?php endif; ?>
+           	<tr>
+            	<td align="center" colspan="<?php echo $_count+2; ?>"><input type="submit" value="保存" /></td>
+            </tr>
+        </table>
+    </div>
+</form>
+</body>
+</html>
+<script>
+function addRow(btn)
+{
+	var tr = $(btn).parent().parent();
+	if($(btn).val() == "+")
+	{
+		var newtr = tr.clone();
+		newtr.find(":button").val("-");
+		// 放到table中最后一行的前面
+		tr.parent().find("tr:last").before(newtr);
+	}
+	else
+		tr.remove();
+}
+</script>

@@ -1,0 +1,90 @@
+<!-- $Id: category_info.htm 16752 2009-10-20 09:59:38Z wangleisvn $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECSHOP 管理中心 - 添加角色 </title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/Styles/general.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/Styles/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery-1.4.2.min.js"></script>
+<style>
+li{margin:5px;list-style-type:none;}
+</style>
+</head>
+<body>
+<h1>
+    <span class="action-span"><a href="__CONTROLLER__/lst">角色列表</a></span>
+    <span class="action-span1"><a href="#">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 添加角色 </span>
+    <div style="clear:both"></div>
+</h1>
+<div class="main-div">
+    <form action="__SELF__" method="post">
+        <table width="100%" id="general-table">
+                    <tr>
+                <td class="label">角色名称:</td>
+                <td>
+                	                   	    <input type='text' name='role_name' maxlength="20" value='' size='27' />
+                                                           	<font color="red">*</font>
+                                    </td>
+            </tr>
+                    <tr>
+                <td class="label">选择权限：</td>
+                <td align="left">
+                	<ul>
+                	<?php foreach ($priData as $k => $v): ?>
+                		<li level="<?php echo $v['pri_level']; ?>">
+                		
+                		<?php echo str_repeat('-', 6 * $v['pri_level']); ?>
+						<input name="privilege_id[]" type="checkbox" value="<?php echo $v['id']; ?>" />
+                		<?php echo $v['pri_name']; ?></li>
+                	<?php endforeach; ?>
+                	</ul>
+                </td>
+            </tr>
+                </table>
+        <div class="button-div">
+            <input type="submit" value=" 确定 " />
+            <input type="reset" value=" 重置 " />
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+<script>
+$(":checkbox").click(function(){
+	var status = $(this).attr("checked");
+	// 先取出所在的li
+	var li = $(this).parent();
+	// 先取出当前的level值
+	var level = li.attr("level");
+	// 再取出后面的li,并循环
+	li.nextAll("li").each(function(){
+		// 如果是子权限就处理否则退出循环
+		if($(this).attr("level") > level)
+		{
+			// 找出每个li中的checkbox
+			if(status)
+				$(this).find(':checkbox').attr("checked","checked");
+			else
+				$(this).find(':checkbox').removeAttr("checked");
+		}
+		else
+			return false;
+	});
+	// 当选择一个权限时那么它的所有上级权限也应该是选中的
+	if(status)
+	{
+		li.prevAll("li").each(function(){
+			// 每找到一个上一级的就把level再提高一级，这样不会同一级找两个
+			if($(this).attr("level") < level)
+			{
+				level--;
+				$(this).find(':checkbox').attr("checked","checked");
+			}
+		});
+	}
+});
+</script>
